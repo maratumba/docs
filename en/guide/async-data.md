@@ -38,9 +38,22 @@ Nuxt.js offers you different ways to use `asyncData`. Choose the one you're the 
 
 <div class="Alert Alert--grey">
 
-We are using [axios](https://github.com/mzabriskie/axios) to make isomorphic HTTP requests, we <strong>strongly recommend</strong> to use our [axios module](https://axios.nuxtjs.org/) for your Nuxt projects.
+We are using [axios](https://github.com/mzabriskie/axios) to make isomorphic HTTP requests, we <strong>strongly recommend</strong> to use our [axios module](https://axios.nuxtjs.org/) for your Nuxt projects. 
 
 </div>
+
+If you are using the nuxt axios module, the `$axios` object will be available within the context, handling authentication and proxy setup in `nuxt.config.js`.
+
+```js
+export default {
+  asyncData ({ $axios, params }) {
+    return $axios.get(`https://my-api/posts/${params.id}`)
+      .then((res) => {
+        return { title: res.data.title }
+      })
+  }
+}
+```
 
 If you are using `axios` directly from `node_modules` and used the `axios.interceptors` to add interceptors to transform the data, make sure to create an instance before adding interceptors. If not, when you refresh the serverRender page,  the interceptors will be added multiple times, which will cause a data error.
 
